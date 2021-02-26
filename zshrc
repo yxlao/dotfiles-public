@@ -84,7 +84,8 @@ ZSH_THEME="playground"
 # Add wisely, as too many plugins slow down shell startup.
 source $HOME/.dotfiles/oh-my-zsh/plugins/git/git.plugin.zsh
 source $HOME/.dotfiles/oh-my-zsh/plugins/pip/pip.plugin.zsh
-plugins=(git, pip, zsh-syntax-highlighting)
+# plugins=(git, pip, zsh-syntax-highlighting)
+plugins=(zsh-syntax-highlighting)
 
 # User configuration
 
