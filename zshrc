@@ -82,6 +82,8 @@ ZSH_THEME="playground"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+source $HOME/.dotfiles/oh-my-zsh/plugins/git/git.plugin.zsh
+source $HOME/.dotfiles/oh-my-zsh/plugins/pip/pip.plugin.zsh
 plugins=(git, pip, zsh-syntax-highlighting)
 
 # User configuration
@@ -128,8 +130,5 @@ fi
 
 # added by travis gem
 [ ! -s /home/yixing/.travis/travis.sh ] || source /home/yixing/.travis/travis.sh
-
-source $HOME/.dotfiles/oh-my-zsh/plugins/git/git.plugin.zsh
-source $HOME/.dotfiles/oh-my-zsh/plugins/pip/pip.plugin.zsh
 
 
