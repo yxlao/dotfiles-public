@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# grho
+
+command="git fetch origin && git reset --hard origin/`git rev-parse --abbrev-ref HEAD`"
+read -p "$command, continue? (y/n) " yn
+
+if [[ "$yn" =~ ^[Yy]$ ]]
+then
+    echo $command
+    eval $command
+else
+    echo skipped
+fi

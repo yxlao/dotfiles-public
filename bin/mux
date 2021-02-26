@@ -1,0 +1,27 @@
+#!/bin/bash
+# Run tmux $name conviniently
+
+# init default session name
+session_name="main"
+
+if [ "$1" == "list" ];
+then
+    # list sessions
+    tmux list-sessions
+else
+    # set session name to 1st argument
+    if [ ! -z "$1" ];
+    then
+        session_name=$1
+    fi
+    # check if exist
+    tmux -2 has-session -t "$session_name" &> /dev/null
+    # if not exist then create session
+    if [ $? != 0 ];
+    then
+        tmux new-session -s "$session_name" -n editor -d
+        # tmux source-file ~/.tmux.pane
+    fi
+    # attach
+    tmux -2 attach -t "$session_name"
+fi

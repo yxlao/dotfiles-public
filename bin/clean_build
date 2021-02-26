@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Usage:
+# source this file instead of running it, e.g.
+# alias build="source $HOME/.dotfiles/bin/clean_build"
+
+stripped_pwd=${PWD##*/}
+
+if [[ ${stripped_pwd} = "build" ]];
+then
+    rm -rf ${PWD}/*  2> /dev/null
+    rm -rf ${PWD}/.* 2> /dev/null
+    echo "In build already, ${PWD} has been cleaned."
+else
+    if [ -d ${PWD}/build ]; then
+        rm -rf build/*  2> /dev/null
+        rm -rf build/.* 2> /dev/null
+        cd build
+        echo "Previous in build's parent, ${PWD} has been cleaned."
+    else
+        mkdir build
+        cd build
+        echo "Previous in build's parent, ${PWD} has been created."
+    fi
+fi

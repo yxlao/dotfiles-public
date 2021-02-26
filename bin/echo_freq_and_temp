@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if ! [ -x "$(command -v sensors)" ]; then
+  echo 'Error: Please run sudo apt install lm-sensors first.' >&2
+  exit 1
+fi
+
+lscpu | grep MHz | sed -e 's/   */  /g' | sed -e 's/  /\t/g'
+echo ""
+sensors | grep Package | sort
+sensors | grep Core | sort

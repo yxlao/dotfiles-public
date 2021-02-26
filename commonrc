@@ -1,0 +1,128 @@
+# Git discovery through mount point
+export GIT_DISCOVERY_ACROSS_FILESYSTEM=true
+
+# GCC output colors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# conda officially recommended settings
+conda_init=$HOME/miniconda3/etc/profile.d/conda.sh
+if [ -f $conda_init ]; then
+    source $conda_init
+fi
+
+# remove a path from PATH
+remove_PATH () {
+    export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`;
+}
+
+# safe add path
+add_PATH () {
+  # add_PATH "PATH" $PATH "$HOME/.dotfiles/bin"
+  # add_PATH $1 $2 $3
+  # add_PATH var_name curr_values new_value
+  case ":$PATH:" in
+    *":$1:"*) :;; # already there
+    *) PATH="$PATH:$1";;
+  esac
+}
+
+# safe add path
+add_priority_PATH () {
+  # add_PATH "PATH" $PATH "$HOME/.dotfiles/bin"
+  # add_PATH $1 $2 $3
+  # add_PATH var_name curr_values new_value
+  remove_PATH "$1"
+  case ":$PATH:" in
+    *":$1:"*) :;; # already there
+    *) PATH="$1:$PATH";;
+  esac
+}
+
+add_LD_LIBRARY_PATH () {
+  case ":$LD_LIBRARY_PATH:" in
+    *":$1:"*) :;; # already there
+    *) export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$1";;
+  esac
+}
+
+add_PYTHONPATH () {
+  case ":$PYTHONPATH:" in
+    *":$1:"*) :;; # already there
+    *) export PYTHONPATH="$PYTHONPATH:$1";;
+  esac
+}
+
+
+# Conda
+conda_activate() {
+    add_PATH "$HOME/miniconda2/bin"
+}
+conda3_activate() {
+    add_PATH "$HOME/miniconda3/bin"
+}
+
+# support for simple-virtualenv-wrapper
+source $HOME/.dotfiles/simple-virtualenv-wrapper/ve.sh
+
+# snap
+add_PATH "/snap/bin"
+
+# dotfiles and dropbox path
+add_priority_PATH "/usr/local/opt/llvm@3.9/bin"
+add_PATH "$HOME/.local/bin"
+add_PATH "$HOME/.dotfiles/bin"
+add_PATH "$HOME/.dotfiles/bitpocket/bin"
+add_PATH "$HOME/Dropbox/bin"
+add_PATH "$HOME/.cargo/bin"
+add_PATH "$HOME/repo/bin"
+
+# NPM settings
+add_PATH "$HOME/.npm-global/bin"
+export NPM_CONFIG_PREFIX=$HOME/.npm-global
+
+# golang
+# export GOROOT=/usr/bin/go  # TODO: make it more robust
+export GOPATH=$HOME/go
+add_PATH "$GOROOT/bin"
+
+# CUDA
+add_PATH "/usr/local/cuda/bin"
+add_LD_LIBRARY_PATH "/usr/local/cuda/lib64"
+add_LD_LIBRARY_PATH "/usr/local/cuda/extras/CUPTI/lib64"
+export CUDA_INC_DIR=/usr/local/cuda/include
+
+# CUDA ubuntu 16.04 default repo path
+# add_LD_LIBRARY_PATH "/usr/lib/x86_64-linux-gnu"
+# export CUDA_INC_DIR=/usr/include
+
+# nnvm, tinyflow
+# add_PYTHONPATH "$HOME/repo/tinyflow/python"
+# add_PYTHONPATH "$HOME/repo/tinyflow/nnvm/python"
+
+# torch
+torch_activate=$HOME/torch/install/bin/torch-activate
+if [ -f "$torch_activate" ]
+then
+    source $torch_activate
+    export TORCH_HOME=$HOME/torch
+fi
+
+# ccache
+if [[ "$(uname)" == "Darwin" ]]
+then
+    ccache_bin_path="/usr/local/var/homebrew/linked/ccache/libexec"
+    if [ -f ${ccache_bin_path}/cc ]; then
+        export CC=${ccache_bin_path}/clang
+        export CXX=${ccache_bin_path}/clang++
+        add_priority_PATH ${ccache_bin_path}
+    fi
+else
+    true
+    if [ -f /usr/lib/ccache/gcc ]; then
+        add_priority_PATH "/usr/lib/ccache"
+    fi
+fi
+
+# $HOME/bin shall always proceeds "/usr/lib/ccache"
+add_priority_PATH "$HOME/bin"
+

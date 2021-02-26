@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# - To execute:
+#   git commit -m "my commit message"
+# - Simply run:
+#   gcm my commit message
+
+comment="'$*'"
+command="git commit -m ${comment}"
+echo $command
+eval $command
