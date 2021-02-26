@@ -7,3 +7,6 @@
 [submodule "zsh_custom/plugins/zsh-syntax-highlighting"]
 	path = zsh_custom/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "simple-virtualenv-wrapper"]
+	path = simple-virtualenv-wrapper
+	url = https://github.com/QinMing/simple-virtualenv-wrapper.git
